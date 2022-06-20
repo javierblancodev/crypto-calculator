@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import Formulario from './components/Formulario';
 import ImagenCripto from './img/imagen-criptos.png';
 
-// Los styled components se definen fuera del componente
 const Contenedor = styled.div`
   max-width: 900px;
   margin: 0 auto;
@@ -31,7 +30,6 @@ const Heading = styled.h1`
   margin-bottom: 50px;
   font-size: 34px;
 
-  /* Los styled components tambien soportan pseudoelementos */
   &::after {
     content: '';
     width: 100px;
