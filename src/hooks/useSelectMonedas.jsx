@@ -1,16 +1,33 @@
+import { useState } from 'react';
 import styled from '@emotion/styled'
-import React from 'react';
 
 const Label = styled.label`
     color: #ffffff;
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 15px 0;
+`
+
+const Select = styled.select`
+    width: 100%;
+    font-size: 18px;
+    padding: 14px;
+    border-radius: 10px;
 `
 
 const useSelectMonedas = (label, opciones) => {
 
+    const [state, setState] = useState("");
+    
     const SelectMonedas = () => ( // Observa que son parentesis y no llaves. Esta apertura y cierre de parentesis en react hace implicito el return, y su cotenido se mostrara en pantalla
         <>
             <Label>{label}</Label>
-            <select>
+            <Select
+                value={state}
+                onChange={ e => setState(e.target.value)}
+            >
                 <option value="">-- Select --</option>
 
                 {opciones.map( opciones => (
@@ -19,11 +36,11 @@ const useSelectMonedas = (label, opciones) => {
                         value={opciones.id}
                     >{opciones.nombre}</option>
                 ))}
-            </select>
+            </Select>
         </>
     )
 
-    return [ SelectMonedas ]
+    return [ state, SelectMonedas ]
 }
 
 export default useSelectMonedas
