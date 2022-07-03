@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from '@emotion/styled';
+import Error from './Error';
 import useSelectMonedas from '../hooks/useSelectMonedas';
 import { monedas } from '../data/monedas';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const InputSubmit = styled.input`
     background-color: #9497ff;
@@ -26,27 +27,60 @@ const InputSubmit = styled.input`
 
 const Formulario = () => {
 
+    const [ cryptos, setCryptos ] = useState([]);
+    const [ error, setError ] = useState(false);
+
     const [ moneda, SelectMonedas ] = useSelectMonedas("Select Official Currency", monedas);
+    const [ crypto, SelectCrypto ] = useSelectMonedas("Select Cryptocurrency", cryptos);
     
     useEffect(() => {
         const consultarAPI = async () => {
-            const url = "https://min-api.cryptocompare.com/data/top/mktcapfull?limit=20&tsym=USD"
+            const url = "https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD"
 
             const respuesta = await fetch(url);
             const resultado = await respuesta.json();
-            console.log(resultado.Data);
+            
+            const arrayCryptos = resultado.Data.map((crypto) => {
+                const objeto = {
+                    id: crypto.CoinInfo.Name,
+                    nombre: crypto.CoinInfo.FullName
+                };
+
+                return objeto;
+            });
+            setCryptos(arrayCryptos);
         };
         consultarAPI();
-    }, [])
+    }, []);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        
+        if([moneda, crypto].includes('')) {
+            setError(true);
+            return;
+        }
+
+        console.log(moneda);
+        console.log(crypto);
+        setError(false);
+    }
 
     return (
-        <form>
-            <SelectMonedas/>
 
-            {moneda}
+        <>
+            {error && <Error>All fields are mandatory </Error>}
+            <form
+                onSubmit={handleSubmit}
+            >
+                <SelectMonedas/>
+                <SelectCrypto/>
 
-            <InputSubmit type="submit" value="quote" />
-        </form>
+                {moneda}
+
+                <InputSubmit type="submit" value="quote" />
+            </form>
+        </>
     )
 }
 
