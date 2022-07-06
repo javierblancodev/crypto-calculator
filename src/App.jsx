@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Formulario from './components/Formulario';
 import ImagenCripto from './img/imagen-criptos.png';
 import { useEffect } from 'react';
+import Resultado from './components/Resultado';
 
 const Contenedor = styled.div`
   max-width: 900px;
@@ -76,9 +77,15 @@ function App() {
       />
       <div>
         <Heading>Instant Quote for your Cryptocurrencies</Heading>
+        
         <Formulario
           setMonedas={setMonedas}
         />
+
+        {resultado.PRICE && <Resultado
+          resultado={resultado}
+        />}
+
       </div>
       
     </Contenedor>
